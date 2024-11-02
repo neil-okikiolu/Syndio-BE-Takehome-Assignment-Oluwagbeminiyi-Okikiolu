@@ -4,29 +4,30 @@ A RESTful API service built with Go and Gin framework for managing employee job 
 
 ## Prerequisites
 
-- Go 1.16 or higher
+- Go 1.23.2
 - SQLite3
 
 ## Project Setup
 
-1. Clone the repository
-2. Navigate to the project directory
-3. Initialize Go modules:
+1. Clone the repository:
 
 ```bash
-go mod init employee-jobs
+git clone https://github.com/neil-okikiolu/Syndio-BE-Takehome-Assignment-Oluwagbeminiyi-Okikiolu.git
+cd Syndio-BE-Takehome-Assignment-Oluwagbeminiyi-Okikiolu
 ```
 
-4. Install dependencies:
+2. Install dependencies:
 
 ```bash
-go mod tidy
+go mod download
 ```
 
-This will install the required packages:
+Note: The project already includes a `go.mod` file with all necessary dependencies. No need to initialize a new module.
 
-- github.com/gin-gonic/gin
-- github.com/ncruces/go-sqlite3
+Main dependencies:
+
+- github.com/gin-gonic/gin v1.10.0
+- github.com/ncruces/go-sqlite3 v0.20.0
 
 ## Building and Running
 
@@ -39,13 +40,13 @@ go build
 2. Run the application:
 
 ```bash
-./employee-jobs
+./Syndio-BE-Takehome-Assignment-Oluwagbeminiyi-Okikiolu
 ```
 
 The server will start on port 8080 by default. You can set a different port using the `PORT` environment variable:
 
 ```bash
-PORT=3000 ./employee-jobs
+PORT=3000 ./Syndio-BE-Takehome-Assignment-Oluwagbeminiyi-Okikiolu
 ```
 
 ## API Endpoints
