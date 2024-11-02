@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 )
 
@@ -40,10 +39,11 @@ func NewRepository(db *sql.DB) *Repository {
 func (r *Repository) GetEmployeeJob(id string) (*EmployeeJob, error) {
 	var emp EmployeeJob
 	err := r.db.QueryRow("SELECT id, employee_id, department, job_title FROM employee_jobs WHERE id = ?", id).Scan(&emp.Id, &emp.EmployeeId, &emp.Department, &emp.JobTitle)
-	fmt.Printf("err: %v\n", err)
+
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (r *Repository) GetEmployeeJob(id string) (*EmployeeJob, error) {
 
 func (r *Repository) GetAllEmployeeJobs() ([]EmployeeJob, error) {
 	rows, err := r.db.Query("SELECT id, employee_id, department, job_title FROM employee_jobs")
-	fmt.Printf("err: %v\n", err)
+
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (r *Repository) GetAllEmployeeJobs() ([]EmployeeJob, error) {
 }
 
 func (r *Repository) CreateEmployee(emp *EmployeeJob) error {
-	result, err := r.db.Exec("INSERT INTO employee_jobs (employee_id, department, job_title) VALUES (?)", emp.EmployeeId, emp.Department, emp.JobTitle)
+	result, err := r.db.Exec("INSERT INTO employee_jobs (employee_id, department, job_title) VALUES (?, ?, ?)", emp.EmployeeId, emp.Department, emp.JobTitle)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (r *Repository) CreateEmployee(emp *EmployeeJob) error {
 	if err != nil {
 		return err
 	}
-	emp.EmployeeId = int(id)
+	emp.Id = int(id)
 	return nil
 }
 
@@ -90,7 +90,7 @@ func (r *Repository) UpdateEmployee(id string, update *EmployeeJobUpdate) error 
 
 	if update.EmployeeId != nil {
 		setClauses = append(setClauses, " employee_id = ?")
-		args = append(args, *update.Department)
+		args = append(args, *update.EmployeeId)
 	}
 
 	if update.Department != nil {
