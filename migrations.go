@@ -14,9 +14,27 @@ const (
 			department TEXT NOT NULL,
 			job_title TEXT NOT NULL,
 			FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-	);`
+	);
+	
+		-- Create indexes
+    CREATE INDEX IF NOT EXISTS idx_employee_jobs_employee_id 
+    ON employee_jobs(employee_id);
 
-	dropEmployeeJobsTable = `DROP TABLE IF EXISTS employee_jobs;`
+    CREATE INDEX IF NOT EXISTS idx_employee_jobs_department 
+    ON employee_jobs(department);
+
+    CREATE INDEX IF NOT EXISTS idx_employee_jobs_job_title 
+    ON employee_jobs(job_title);	
+`
+
+	dropEmployeeJobsTable = `
+		-- Drop indexes
+    DROP INDEX IF EXISTS idx_employee_jobs_employee_id;
+    DROP INDEX IF EXISTS idx_employee_jobs_department;
+    DROP INDEX IF EXISTS idx_employee_jobs_job_title;
+
+		DROP TABLE IF EXISTS employee_jobs;
+`
 )
 
 func Migrate(db *sql.DB) error {

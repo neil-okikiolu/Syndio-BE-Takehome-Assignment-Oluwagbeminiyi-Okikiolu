@@ -58,7 +58,7 @@ func (r *Repository) GetAllEmployeeJobs() ([]EmployeeJob, error) {
 	}
 	defer rows.Close()
 
-	var employee_jobs []EmployeeJob
+	employee_jobs := make([]EmployeeJob, 0) // Key part: initialize with make() and length 0
 	for rows.Next() {
 		var emp EmployeeJob
 		if err := rows.Scan(&emp.Id, &emp.EmployeeId, &emp.Department, &emp.JobTitle); err != nil {
