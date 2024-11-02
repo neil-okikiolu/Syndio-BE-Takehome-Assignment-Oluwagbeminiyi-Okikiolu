@@ -38,7 +38,7 @@ func (h *Handler) GetEmployee(c *gin.Context) {
 
 	emp, err := h.repo.GetEmployeeJob(id)
 	if err != nil {
-		c.JSON(StatusInternalServerError, gin.H{"error": "Internal server error"})
+		c.JSON(StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 	if emp == nil {
@@ -52,7 +52,7 @@ func (h *Handler) GetEmployee(c *gin.Context) {
 func (h *Handler) GetAllEmployees(c *gin.Context) {
 	employees, err := h.repo.GetAllEmployeeJobs()
 	if err != nil {
-		c.JSON(StatusInternalServerError, gin.H{"error": "Internal server error"})
+		c.JSON(StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
@@ -67,7 +67,7 @@ func (h *Handler) CreateEmployee(c *gin.Context) {
 	}
 
 	if err := h.repo.CreateEmployee(&emp); err != nil {
-		c.JSON(StatusInternalServerError, gin.H{"error": "Internal server error"})
+		c.JSON(StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
@@ -96,7 +96,7 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		c.JSON(StatusInternalServerError, gin.H{"error": "Internal server error"})
+		c.JSON(StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
