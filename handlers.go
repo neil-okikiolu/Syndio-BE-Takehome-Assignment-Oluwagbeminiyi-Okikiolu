@@ -36,7 +36,7 @@ func NewHandler(repo *Repository) *Handler {
 func (h *Handler) GetEmployee(c *gin.Context) {
 	id := c.Param("id")
 
-	emp, err := h.repo.GetEmployee(id)
+	emp, err := h.repo.GetEmployeeJob(id)
 	if err != nil {
 		c.JSON(StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -50,7 +50,7 @@ func (h *Handler) GetEmployee(c *gin.Context) {
 }
 
 func (h *Handler) GetAllEmployees(c *gin.Context) {
-	employees, err := h.repo.GetAllEmployees()
+	employees, err := h.repo.GetAllEmployeeJobs()
 	if err != nil {
 		c.JSON(StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -60,7 +60,7 @@ func (h *Handler) GetAllEmployees(c *gin.Context) {
 }
 
 func (h *Handler) CreateEmployee(c *gin.Context) {
-	var emp Employee
+	var emp EmployeeJob
 	if err := c.ShouldBindJSON(&emp); err != nil {
 		c.JSON(StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return
@@ -78,7 +78,7 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 	id := c.Param("id")
 
 	// Parse the partial update request
-	var update EmployeeUpdate
+	var update EmployeeJobUpdate
 	if err := c.ShouldBindJSON(&update); err != nil {
 		c.JSON(StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return

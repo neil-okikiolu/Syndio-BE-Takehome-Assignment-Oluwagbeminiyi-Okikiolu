@@ -12,10 +12,10 @@ import (
 )
 
 func setupRoutes(r *gin.Engine, h *Handler) {
-	r.GET("/employees", h.GetAllEmployees)
-	r.GET("/employees/:id", h.GetEmployee)
-	r.POST("/employees", h.CreateEmployee)
-	r.PATCH("/employees/:id", h.UpdateEmployee)
+	r.GET("/employee/jobs", h.GetAllEmployees)
+	r.GET("/employee/jobs/:id", h.GetEmployee)
+	r.POST("/employee/jobs", h.CreateEmployee)
+	r.PATCH("/employee/jobs/:id", h.UpdateEmployee)
 }
 
 func main() {
@@ -29,6 +29,11 @@ func main() {
 	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Run migrations (if needed)
+	if err := Migrate(db); err != nil {
+		log.Fatal("Failed to run migration:", err)
 	}
 
 	// Create repository and handler
@@ -47,5 +52,5 @@ func main() {
 		port = "8080"
 	}
 
-	r.Run(":" + port) // listen and serve on
+	r.Run(":" + port) // listen and serve on 8080 or specified port
 }
