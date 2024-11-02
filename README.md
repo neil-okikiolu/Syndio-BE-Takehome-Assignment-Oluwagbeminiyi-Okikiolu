@@ -1,6 +1,212 @@
-# Running the server
+# Employee Jobs API
 
-# Syndio Backend App (Original)
+A RESTful API service built with Go and Gin framework for managing employee job information. The service uses SQLite as its database.
+
+## Prerequisites
+
+- Go 1.16 or higher
+- SQLite3
+
+## Project Setup
+
+1. Clone the repository
+2. Navigate to the project directory
+3. Initialize Go modules:
+
+```bash
+go mod init employee-jobs
+```
+
+4. Install dependencies:
+
+```bash
+go mod tidy
+```
+
+This will install the required packages:
+
+- github.com/gin-gonic/gin
+- github.com/ncruces/go-sqlite3
+
+## Building and Running
+
+1. Build the project:
+
+```bash
+go build
+```
+
+2. Run the application:
+
+```bash
+./employee-jobs
+```
+
+The server will start on port 8080 by default. You can set a different port using the `PORT` environment variable:
+
+```bash
+PORT=3000 ./employee-jobs
+```
+
+## API Endpoints
+
+### Get All Employee Jobs
+
+```
+GET /employee/jobs
+```
+
+Response (200 OK):
+
+```json
+[
+  {
+    "id": 1,
+    "employee_id": 100,
+    "department": "Engineering",
+    "job_title": "Software Engineer"
+  },
+  {
+    "id": 2,
+    "employee_id": 101,
+    "department": "Marketing",
+    "job_title": "Marketing Manager"
+  }
+]
+```
+
+### Get Single Employee Job
+
+```
+GET /employee/jobs/:id
+```
+
+Response (200 OK):
+
+```json
+{
+  "id": 1,
+  "employee_id": 100,
+  "department": "Engineering",
+  "job_title": "Software Engineer"
+}
+```
+
+### Create Employee Job
+
+```
+POST /employee/jobs
+```
+
+Request Body:
+
+```json
+{
+  "employee_id": 102,
+  "department": "Sales",
+  "job_title": "Sales Representative"
+}
+```
+
+Response (201 Created):
+
+```json
+{
+  "id": 3,
+  "employee_id": 102,
+  "department": "Sales",
+  "job_title": "Sales Representative"
+}
+```
+
+### Update Employee Job
+
+```
+PATCH /employee/jobs/:id
+```
+
+Request Body (partial updates supported):
+
+```json
+{
+  "department": "Business Development",
+  "job_title": "Senior Sales Representative"
+}
+```
+
+Response (204 No Content)
+
+## API Testing Examples
+
+Using cURL:
+
+1. Create a new employee job:
+
+```bash
+curl -X POST http://localhost:8080/employee/jobs \
+  -H "Content-Type: application/json" \
+  -d '{
+    "employee_id": 100,
+    "department": "Engineering",
+    "job_title": "Software Engineer"
+  }'
+```
+
+2. Get all employee jobs:
+
+```bash
+curl http://localhost:8080/employee/jobs
+```
+
+3. Get a specific employee job:
+
+```bash
+curl http://localhost:8080/employee/jobs/1
+```
+
+4. Update an employee job:
+
+```bash
+curl -X PATCH http://localhost:8080/employee/jobs/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "job_title": "Senior Software Engineer"
+  }'
+```
+
+## Error Responses
+
+The API returns the following error codes:
+
+- `400 Bad Request`: Invalid request payload
+- `404 Not Found`: Employee job not found
+- `500 Internal Server Error`: Server-side errors
+
+Error Response Format:
+
+```json
+{
+  "error": "Error message here"
+}
+```
+
+## Database Schema
+
+The application uses SQLite with the following schema:
+
+```sql
+CREATE TABLE employee_jobs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    employee_id INTEGER NOT NULL,
+    department TEXT NOT NULL,
+    job_title TEXT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
+);
+```
+
+Indexes are created for `employee_id`, `department`, and `job_title` columns for better query performance.
+
+# Syndio Backend App (Original Instructions)
 
 Using the `employees.db` sqlite database in this repository with the following table/data:
 
